@@ -32,6 +32,7 @@ class AlbumPage extends StatefulWidget {
 
 class _AlbumPageState extends State<AlbumPage> {
   late Future<List<Album>> albums;
+  Album? selectedAlbum;
 
   @override
   void initState() {
@@ -58,35 +59,66 @@ class _AlbumPageState extends State<AlbumPage> {
       appBar: AppBar(
         title: const Text('Album Explorer'),
       ),
-      body: FutureBuilder<List<Album>>(
-        future: albums,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      body: Column(
+        children: [
+          Card(
+            margin: const EdgeInsets.all(12),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: selectedAlbum == null
+                  ? const Text('No Album Selected')
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          selectedAlbum!.title,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 8),
+                        Text('Album ID: ${selectedAlbum!.id}'),
+                        Text('User ID: ${selectedAlbum!.userId}'),
+                      ],
+                    ),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Album>>(
+              future: albums,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
 
-          final albumList = snapshot.data!;
+                final albumList = snapshot.data!;
 
-          return ListView.builder(
-            itemCount: albumList.length,
-            itemBuilder: (context, index) {
-              final album = albumList[index];
+                return ListView.builder(
+                  itemCount: albumList.length,
+                  itemBuilder: (context, index) {
+                    final album = albumList[index];
 
-              return ListTile(
-                title: Text(album.title),
-                subtitle: Text('Album ID: ${album.id}'),
-              );
-            },
-          );
-        },
+                    return ListTile(
+                      title: Text(album.title),
+                      subtitle: Text('Album ID: ${album.id}'),
+                      onTap: () {
+                        setState(() {
+                          selectedAlbum = album;
+                        });
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -12,3 +12,11 @@ I created an Album model and connected the app to the JSONPlaceholder API. The a
 # Journal Prompt:
 
 When requesting multiple items, I receive a list of albums instead of just one album, so I need to convert each JSON object into an Album.
+
+# Phase 2
+
+I added album selection using a state variable. Clicking an album displays its title, ID, and User ID above the list.
+
+# Journal Prompt:
+
+Using a state variable updates part of the current screen instead of navigating to an entirely new page.
