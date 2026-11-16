@@ -53,6 +53,30 @@ class _AlbumPageState extends State<AlbumPage> {
     }
   }
 
+  Future<void> deleteAlbum() async {
+    if (selectedAlbum == null) return;
+
+    final response = await http.delete(
+      Uri.parse(
+        'https://jsonplaceholder.typicode.com/albums/${selectedAlbum!.id}',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        selectedAlbum = null;
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Album deleted successfully')),
+      );
+    } else {
+      throw Exception('Failed to delete album');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +101,15 @@ class _AlbumPageState extends State<AlbumPage> {
                         const SizedBox(height: 8),
                         Text('Album ID: ${selectedAlbum!.id}'),
                         Text('User ID: ${selectedAlbum!.userId}'),
+                        const SizedBox(height: 12),
+                        ElevatedButton(
+                          onPressed: deleteAlbum,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Delete Album'),
+                        ),
                       ],
                     ),
             ),

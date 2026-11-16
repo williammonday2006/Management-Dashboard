@@ -20,3 +20,11 @@ I added album selection using a state variable. Clicking an album displays its t
 # Journal Prompt:
 
 Using a state variable updates part of the current screen instead of navigating to an entirely new page.
+
+# Phase 3
+
+I added a delete button that sends a DELETE request using the selected album's ID. After a successful response, the selection resets and a success message appears.
+
+# Journal Prompt:
+
+Checking the status code ensures the server successfully processed the request before the app tells the user the album was deleted.
