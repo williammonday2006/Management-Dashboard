@@ -28,3 +28,11 @@ I added a delete button that sends a DELETE request using the selected album's I
 # Journal Prompt:
 
 Checking the status code ensures the server successfully processed the request before the app tells the user the album was deleted.
+
+# Phase 4
+
+I tested fetching, selecting, and deleting albums. Everything worked as expected, and JSONPlaceholder successfully simulated deletion.
+
+# Journal Prompt:
+
+I verified that the album list loads, selecting albums updates the details, and deleting an album resets the selection. I also confirmed that the loading and error messages work correctly.
